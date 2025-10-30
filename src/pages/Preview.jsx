@@ -1,13 +1,13 @@
+// src/pages/Preview.jsx
 import React, { useCallback } from "react";
-import Header from "../components/Header.jsx";
 import { useReport } from "../context/ReportContext.jsx";
-import StatusBadge from "../components/StatusBadge.jsx";
 import { generatePdf } from "../utils/generatePdf.js";
 
 export default function Preview() {
   const { currentReport } = useReport();
+  const f = currentReport.fuvar;
 
-  const handleDownloadPdf = useCallback(async () => {
+  const handlePdf = useCallback(async () => {
     await generatePdf(currentReport);
   }, [currentReport]);
 
@@ -21,103 +21,70 @@ export default function Preview() {
     window.location.href = `mailto:lgi.receiving.audit@gmail.com?subject=${subject}&body=${body}`;
   }, [currentReport]);
 
-  const f = currentReport.fuvar;
-
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Header title="Riport kész" />
+    <div className="app-shell">
+      <header className="lgi-header">
+        <div className="lgi-title">Riport kész</div>
+        <div className="lgi-badge">LGI</div>
+      </header>
 
-      <main className="flex-1 p-4 flex flex-col gap-6">
-        <section className="bg-gray-100 rounded-xl p-4 flex flex-col gap-2">
-          <div className="text-sm text-gray-500">Riport azonosító</div>
-          <div className="text-base font-semibold text-gray-900">
-            {currentReport.reportId}
+      <main className="page">
+        <div className="card">
+          <div className="label">Riport azonosító</div>
+          <div style={{ fontWeight: 600 }}>{currentReport.reportId}</div>
+          <div className="label" style={{ marginTop: "0.5rem" }}>
+            Létrehozva
           </div>
-
-          <div className="text-xs text-gray-500">
-            Létrehozva: {currentReport.createdAt}
+          <div>{currentReport.createdAt}</div>
+          <div className="label" style={{ marginTop: "0.5rem" }}>
+            Lezárva
           </div>
-
-          <div className="text-xs text-gray-500">
-            Lezárva: {currentReport.lezartAt || "—"}
+          <div>{currentReport.lezartAt || "—"}</div>
+          <div style={{ marginTop: "0.75rem" }}>
+            {currentReport.statusz === "rendben" ? (
+              <span className="status-pill-ok">RENDBEN</span>
+            ) : currentReport.statusz === "serules" ? (
+              <span className="status-pill-bad">SÉRÜLÉS JELZETT</span>
+            ) : null}
           </div>
-
-          <div className="pt-2">
-            <StatusBadge statusz={currentReport.statusz} />
-          </div>
-        </section>
-
-        <section className="bg-white rounded-xl border border-gray-200 p-4 text-sm text-gray-800 flex flex-col gap-1">
-          <Row label="Rendszám" value={f.rendszam} />
-          <Row label="Rakodás vezető" value={f.rakodasVezeto} />
-          <Row label="Szállítólevél" value={f.szallitolevel} />
-          <Row label="Cég" value={f.ceg} />
-          <Row label="Telephely" value={f.telephely} />
-          <Row label="CMR szám" value={f.cmrSzam} />
-          <Row label="Átvevő neve" value={currentReport.atvevoNev} />
-        </section>
-
-        <section className="bg-white rounded-xl border border-gray-200 p-4 text-sm text-gray-800 flex flex-col gap-2">
-          <div className="font-medium text-gray-900">Összefoglaló</div>
-          <div className="text-gray-800 whitespace-pre-line">
-            {currentReport.osszefoglalo || "—"}
-          </div>
-        </section>
-
-        <section className="bg-white rounded-xl border border-gray-200 p-4 flex flex-col gap-4">
-          <div className="text-sm font-medium text-gray-900">
-            Fotók ({currentReport.fotos.length} db)
-          </div>
-
-          {currentReport.fotos.length === 0 && (
-            <div className="text-sm text-gray-500">Nincs fotó.</div>
-          )}
-
-          <div className="flex flex-col gap-4">
-            {currentReport.fotos.map(photo => (
-              <div
-                key={photo.id}
-                className="border border-gray-300 rounded-lg p-3 flex flex-col gap-2 bg-gray-50"
-              >
-                <img
-                  src={photo.imageUrl}
-                  alt="Bizonyító fotó"
-                  className="w-full h-auto object-contain rounded bg-black"
-                />
-                <div className="text-xs text-gray-500">{photo.timestamp}</div>
-                <div className="text-sm text-gray-800 whitespace-pre-line">
-                  {photo.megjegyzes || "—"}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <div className="flex flex-col gap-3">
-          <button
-            className="w-full bg-red-600 text-white font-semibold text-lg py-4 rounded-xl"
-            onClick={handleDownloadPdf}
-          >
-            PDF letöltése
-          </button>
-
-          <button
-            className="w-full border border-gray-300 text-gray-800 font-medium text-lg py-4 rounded-xl"
-            onClick={handleEmail}
-          >
-            Küldés emailben
-          </button>
         </div>
+
+        <div className="card">
+          <div className="label">Fuvar adatai</div>
+          <InfoRow label="Rendszám" value={f.rendszam} />
+          <InfoRow label="Rakodás vezető" value={f.rakodasVezeto} />
+          <InfoRow label="Szállítólevél" value={f.szallitolevel} />
+          <InfoRow label="Cég" value={f.ceg} />
+          <InfoRow label="Telephely" value={f.telephely} />
+          <InfoRow label="CMR szám" value={f.cmrSzam} />
+          <InfoRow label="Átvevő neve" value={currentReport.atvevoNev} />
+        </div>
+
+        <div className="card">
+          <div className="label">Összefoglaló</div>
+          <div>{currentReport.osszefoglalo || "—"}</div>
+        </div>
+
+        <button className="primary-btn" onClick={handlePdf}>
+          PDF letöltése
+        </button>
+        <button
+          className="primary-btn"
+          onClick={handleEmail}
+          style={{ background: "#fff", color: "var(--text)", border: "1px solid rgba(0,0,0,0.05)" }}
+        >
+          Küldés emailben
+        </button>
       </main>
     </div>
   );
 }
 
-function Row({ label, value }) {
+function InfoRow({ label, value }) {
   return (
-    <div className="flex flex-col">
-      <div className="text-gray-500 text-xs">{label}</div>
-      <div className="text-gray-900 text-sm font-medium">{value || "—"}</div>
+    <div style={{ marginBottom: "0.35rem" }}>
+      <div style={{ fontSize: "0.7rem", color: "var(--muted)" }}>{label}</div>
+      <div style={{ fontSize: "0.8rem" }}>{value || "—"}</div>
     </div>
   );
 }
