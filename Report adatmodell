@@ -1,0 +1,19 @@
+{
+  reportId: "LGI-20251029-163455",
+  createdAt: "2025-10-29 16:34:55",
+  fuvar: {
+    rendszam: "",
+    rakodasVezeto: "",
+    szallitolevel: "",
+    ceg: "",
+    telephely: "",
+    cmrSzam: ""
+  },
+  fotos: [
+    { id:"ph_001", imageUrl:"blob:...", megjegyzes:"", timestamp:"..." }
+  ],
+  statusz: "rendben" | "serules",
+  osszefoglalo: "",
+  atvevoNev: "",
+  lezartAt: ""
+}
