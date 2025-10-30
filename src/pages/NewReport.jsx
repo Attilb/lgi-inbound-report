@@ -1,85 +1,100 @@
+// src/pages/NewReport.jsx
 import React from "react";
-import Header from "../components/Header.jsx";
-import { useReport } from "../context/ReportContext.jsx";
 import { useNavigate } from "react-router-dom";
+import { useReport } from "../context/ReportContext.jsx";
 
 export default function NewReport() {
   const { currentReport, updateFuvarField } = useReport();
   const nav = useNavigate();
-
-  const fuvar = currentReport.fuvar;
+  const f = currentReport.fuvar;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Header title="Fuvar adatai" />
+    <div className="app-shell">
+      <header className="lgi-header">
+        <div className="lgi-title">Fuvar adatai</div>
+        <div className="lgi-badge">LGI</div>
+      </header>
 
-      <main className="flex-1 p-4 flex flex-col gap-4">
-        <InputRow
-          label="Rendszám"
-          value={fuvar.rendszam}
-          onChange={v => updateFuvarField("rendszam", v)}
-        />
-        <InputRow
-          label="Rakodás vezető"
-          value={fuvar.rakodasVezeto}
-          onChange={v => updateFuvarField("rakodasVezeto", v)}
-        />
-        <InputRow
-          label="Szállítólevél"
-          value={fuvar.szallitolevel}
-          onChange={v => updateFuvarField("szallitolevel", v)}
-        />
-        <InputRow
-          label="Cég"
-          value={fuvar.ceg}
-          onChange={v => updateFuvarField("ceg", v)}
-        />
-        <InputRow
-          label="Telephely"
-          value={fuvar.telephely}
-          onChange={v => updateFuvarField("telephely", v)}
-        />
-        <InputRow
-          label="CMR szám"
-          value={fuvar.cmrSzam}
-          onChange={v => updateFuvarField("cmrSzam", v)}
-        />
+      <main className="page">
+        <div className="card">
+          <div className="label">Rendszám</div>
+          <input
+            className="input"
+            value={f.rendszam}
+            onChange={(e) => updateFuvarField("rendszam", e.target.value)}
+            placeholder="Pl.: ABC-123"
+          />
+        </div>
 
-        <ReadOnlyRow label="Riport azonosító" value={currentReport.reportId} />
-        <ReadOnlyRow label="Létrehozva" value={currentReport.createdAt} />
+        <div className="card">
+          <div className="label">Rakodás vezető</div>
+          <input
+            className="input"
+            value={f.rakodasVezeto}
+            onChange={(e) => updateFuvarField("rakodasVezeto", e.target.value)}
+            placeholder="Ki volt jelen az átvételnél?"
+          />
+        </div>
+
+        <div className="card">
+          <div className="label">Szállítólevél</div>
+          <input
+            className="input"
+            value={f.szallitolevel}
+            onChange={(e) => updateFuvarField("szallitolevel", e.target.value)}
+            placeholder="Szállítólevél száma"
+          />
+        </div>
+
+        <div className="card">
+          <div className="label">Cég</div>
+          <input
+            className="input"
+            value={f.ceg}
+            onChange={(e) => updateFuvarField("ceg", e.target.value)}
+            placeholder="Ki szállított?"
+          />
+        </div>
+
+        <div className="card">
+          <div className="label">Telephely</div>
+          <input
+            className="input"
+            value={f.telephely}
+            onChange={(e) => updateFuvarField("telephely", e.target.value)}
+            placeholder="Pl.: Páty M1 Raktár #4"
+          />
+        </div>
+
+        <div className="card">
+          <div className="label">CMR szám</div>
+          <input
+            className="input"
+            value={f.cmrSzam}
+            onChange={(e) => updateFuvarField("cmrSzam", e.target.value)}
+            placeholder="CMR azonosító"
+          />
+        </div>
+
+        <div className="card">
+          <div className="label">Riport azonosító</div>
+          <div style={{ fontSize: "0.8rem", color: "var(--text)" }}>
+            {currentReport.reportId}
+          </div>
+          <div style={{ fontSize: "0.7rem", color: "var(--muted)" }}>
+            Létrehozva: {currentReport.createdAt}
+          </div>
+        </div>
 
         <button
-          className="mt-6 w-full bg-red-600 text-white font-semibold text-lg py-4 rounded-xl"
+          className="primary-btn"
           onClick={() => nav("/photos")}
         >
           Tovább: Fotók
         </button>
+
+        <div className="footer-hint">Minden mező diktálható is</div>
       </main>
-    </div>
-  );
-}
-
-function InputRow({ label, value, onChange }) {
-  return (
-    <label className="flex flex-col gap-1">
-      <span className="text-sm font-medium text-gray-800">{label}</span>
-      <input
-        className="border border-gray-300 rounded-lg p-3 text-base text-gray-900"
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={label + "..."}
-      />
-    </label>
-  );
-}
-
-function ReadOnlyRow({ label, value }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <span className="text-sm font-medium text-gray-800">{label}</span>
-      <div className="border border-gray-200 rounded-lg p-3 text-base text-gray-500 bg-gray-50">
-        {value}
-      </div>
     </div>
   );
 }
