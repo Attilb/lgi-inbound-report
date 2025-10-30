@@ -1,6 +1,5 @@
+// src/pages/Photos.jsx
 import React, { useRef } from "react";
-import Header from "../components/Header.jsx";
-import PhotoItem from "../components/PhotoItem.jsx";
 import { useReport } from "../context/ReportContext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -10,31 +9,30 @@ export default function Photos() {
   const fileRef = useRef(null);
 
   function handleAddPhotoClick() {
-    if (fileRef.current) {
-      fileRef.current.click();
-    }
+    fileRef.current?.click();
   }
 
   function handleFileChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const imageUrl = URL.createObjectURL(file);
     addPhoto({ imageUrl, megjegyzes: "" });
-
     e.target.value = "";
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Header title="Bizonyító fotók" />
+    <div className="app-shell">
+      <header className="lgi-header">
+        <div className="lgi-title">Bizonyító fotók</div>
+        <div className="lgi-badge">LGI</div>
+      </header>
 
-      <main className="flex-1 p-4 flex flex-col gap-4">
+      <main className="page">
         <button
-          className="w-full bg-red-600 text-white font-semibold py-3 rounded-xl text-base"
+          className="primary-btn"
           onClick={handleAddPhotoClick}
         >
-          + Új fotó
+          + Új fotó felvétele
         </button>
 
         <input
@@ -46,28 +44,38 @@ export default function Photos() {
           onChange={handleFileChange}
         />
 
-        <div className="flex flex-col gap-4">
-          {currentReport.fotos.length === 0 && (
-            <div className="text-sm text-gray-500">
-              Még nincs fotó hozzáadva.
-            </div>
-          )}
+        {currentReport.fotos.length === 0 && (
+          <div className="card">
+            <div className="label">Még nincs fotó</div>
+            <p style={{ fontSize: "0.75rem", color: "var(--muted)" }}>
+              Készíts fotót a sérülésről vagy az áru állapotáról.
+            </p>
+          </div>
+        )}
 
-          {currentReport.fotos.map(photo => (
-            <PhotoItem
-              key={photo.id}
-              photo={photo}
-              onChangeNote={updatePhotoNote}
-            />
-          ))}
-        </div>
+        {currentReport.fotos.map((photo) => (
+          <div key={photo.id} className="photo-card">
+            <img src={photo.imageUrl} alt="Fotó" />
+            <div className="photo-meta">
+              <div className="photo-timestamp">{photo.timestamp}</div>
+              <textarea
+                placeholder="Megjegyzés a képről..."
+                value={photo.megjegyzes || ""}
+                onChange={(e) => updatePhotoNote(photo.id, e.target.value)}
+              />
+            </div>
+          </div>
+        ))}
 
         <button
-          className="mt-6 w-full bg-red-600 text-white font-semibold text-lg py-4 rounded-xl"
+          className="primary-btn"
           onClick={() => nav("/closeout")}
+          style={{ marginTop: "0.5rem" }}
         >
           Tovább: Lezárás
         </button>
+
+        <div className="footer-hint">Fotók a készüléken maradnak</div>
       </main>
     </div>
   );
