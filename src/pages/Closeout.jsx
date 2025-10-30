@@ -1,5 +1,5 @@
+// src/pages/Closeout.jsx
 import React, { useState } from "react";
-import Header from "../components/Header.jsx";
 import { useReport } from "../context/ReportContext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -21,16 +21,16 @@ export default function Closeout() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Header title="Lezárás" />
+    <div className="app-shell">
+      <header className="lgi-header">
+        <div className="lgi-title">Lezárás</div>
+        <div className="lgi-badge">LGI</div>
+      </header>
 
-      <main className="flex-1 p-4 flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-800">
-            Fuvar állapota
-          </label>
-
-          <label className="flex items-center gap-2 text-base text-gray-900">
+      <main className="page">
+        <div className="card">
+          <div className="label">Fuvar állapota</div>
+          <label className="radio-row">
             <input
               type="radio"
               checked={statusz === "rendben"}
@@ -38,8 +38,7 @@ export default function Closeout() {
             />
             <span>Rendben, sérülés nélkül</span>
           </label>
-
-          <label className="flex items-center gap-2 text-base text-gray-900">
+          <label className="radio-row" style={{ marginTop: "0.25rem" }}>
             <input
               type="radio"
               checked={statusz === "serules"}
@@ -49,37 +48,34 @@ export default function Closeout() {
           </label>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-800">
-            Összefoglaló megjegyzés
-          </label>
+        <div className="card">
+          <div className="label">Összefoglaló megjegyzés</div>
           <textarea
-            className="border border-gray-300 rounded-lg p-3 text-base text-gray-900 min-h-[100px]"
             placeholder="Pl.: Raklap fóliázása sérült, de darabszám rendben."
             value={osszefoglalo}
-            onChange={e => setOsszefoglalo(e.target.value)}
+            onChange={(e) => setOsszefoglalo(e.target.value)}
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-800">
-            Átvevő neve
-          </label>
+        <div className="card">
+          <div className="label">Átvevő neve</div>
           <input
-            className="border border-gray-300 rounded-lg p-3 text-base text-gray-900"
+            className="input"
             placeholder="Ki vette át a szállítmányt?"
             value={atvevoNev}
-            onChange={e => setAtvevoNev(e.target.value)}
+            onChange={(e) => setAtvevoNev(e.target.value)}
           />
         </div>
 
         <button
-          className="mt-6 w-full bg-red-600 text-white font-semibold text-lg py-4 rounded-xl disabled:bg-gray-400 disabled:text-gray-100"
-          disabled={!statusz || !atvevoNev}
+          className="primary-btn"
           onClick={handleConfirm}
+          disabled={!statusz || !atvevoNev}
         >
           Riport lezárása és PDF
         </button>
+
+        <div className="footer-hint">LGI • Belső riport</div>
       </main>
     </div>
   );
