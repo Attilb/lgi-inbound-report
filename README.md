@@ -1,17 +1,30 @@
-# LGI Átvételi Riport App
+# 🚚 LGI Átvételi Riport App · Bolt.new projekt README
 
-Mobil-first React app raktári átvételi riportokhoz.
+Ez a projekt egy **mobilon használható React + Vite** alapú alkalmazás,  
+amely a raktári dolgozók számára teszi lehetővé, hogy **bizonyító fotókkal és megjegyzésekkel** dokumentálják a szállítmányok beérkezését.
 
-## Fő lépések
+---
 
-1. Fuvar adatai
-2. Fotók felvétele
-3. Lezárás (státusz, összefoglaló, átvevő neve)
-4. PDF generálás
+## 🧭 Alapinfók
 
-## Futtatás
+**Technológiák**
+- React 18 + Vite 5
+- React Router 6
+- Tailwind CSS
+- jsPDF + html2canvas (riport-PDF generálás)
+- Nincs auth, nincs aláírás, csak magyar nyelv
+
+**Fő lépések**
+1. Fuvar adatainak rögzítése  
+2. Fotók hozzáadása (kamerával)  
+3. Lezárás (státusz, összefoglaló, átvevő név)  
+4. Riport előnézet + PDF letöltés / email küldés  
+
+---
+
+## ⚙️ Futtatás
 
 ```bash
 npm install
 npm run dev
-```
+npm install jspdf html2canvas
