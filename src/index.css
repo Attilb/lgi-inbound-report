@@ -2,11 +2,12 @@
 
 :root {
   --lgi-red: #c8102e;
+  --lgi-dark: #32373c;
   --lgi-bg: #f3f4f6;
   --text: #111827;
   --muted: #6b7280;
   --radius: 1rem;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 body {
@@ -27,6 +28,11 @@ body {
   padding: 1rem 1.1rem;
   border-bottom: 1px solid rgba(0,0,0,0.07);
   background: #fff;
+}
+
+.lgi-logo {
+  height: 32px;
+  width: auto;
 }
 
 .lgi-title {
